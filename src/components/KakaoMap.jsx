@@ -4,7 +4,7 @@ import {useEffect} from "react";
 
 const {kakao} = window;
 
-function KakaoMap({setKakaoPlaceResult, searchedResult}) {
+function KakaoMap({setKakaoPlaceResult, searchedResult, setKakaoMarkes}) {
   const {location} = useCurrnetLocation();
 
   const {latitude: currentLat, longitude: currentLon} = location;
@@ -56,6 +56,8 @@ function KakaoMap({setKakaoPlaceResult, searchedResult}) {
         image: new kakao.maps.MarkerImage(markerImage, markerImageSize),
       });
 
+      setKakaoMarkes((prev) => [...prev, marker]);
+
       kakao.maps.event.addListener(marker, "click", () => {
         const modifedAddressName = place.place_name.replace(
           /메가MGC커피/g,
@@ -87,7 +89,13 @@ function KakaoMap({setKakaoPlaceResult, searchedResult}) {
         }
       });
     };
-  }, [currentLat, currentLon, searchedResult, setKakaoPlaceResult]);
+  }, [
+    currentLat,
+    currentLon,
+    searchedResult,
+    setKakaoPlaceResult,
+    setKakaoMarkes,
+  ]);
 
   return (
     <>

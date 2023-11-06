@@ -68,7 +68,6 @@ function DesktopHeader({siginInView, siginViewHandler, setIsClickedSignin}) {
             <ul className={S.ul}>
               <div className={S.LinkWrap}>
                 <LinkList pageLink="/menu/drink">메뉴 소개</LinkList>
-
                 <motion.div variants={itemVariants}>
                   {isOpen && (
                     <div className={S.subLinkWrap}>
@@ -103,19 +102,25 @@ function DesktopHeader({siginInView, siginViewHandler, setIsClickedSignin}) {
                 </motion.div>
               </div>
               {isAuth ? (
-                <li onClick={handleSignOut} className="cursor-pointer">
+                <div onClick={handleSignOut} className={S.LinkWrap}>
                   로그아웃
-                </li>
+                </div>
               ) : (
-                <li onClick={siginViewHandler} className="cursor-pointer">
+                <div onClick={siginViewHandler} className={S.LinkWrap}>
                   로그인
-                </li>
+                </div>
               )}
               {siginInView && (
                 <SignInModal setIsClickedSignin={setIsClickedSignin} />
               )}
-              {!isAuth && <LinkList pageLink="/signUp">회원가입</LinkList>}
-              {isAuth && user && <li>{user.name || user.username}님</li>}
+              {!isAuth && (
+                <LinkList pageLink="/signUp" className={S.LinkWrap}>
+                  회원가입
+                </LinkList>
+              )}
+              {isAuth && user && (
+                <li className={S.LinkWrap}>{user.name || user.username}님</li>
+              )}
               <div className={S.LinkWrap}>
                 <CartLinkList />
               </div>

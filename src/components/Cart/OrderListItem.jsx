@@ -1,14 +1,17 @@
 import CheckBox from "@/components/CheckBox/CheckBox";
 import CloseButton from "@/components/CloseButton";
 import useCartStore from "@/store/cartStore";
+import LazyImage from "@/utils/LazyImage";
 import {getPbImageURL} from "@/utils/getPbImageURL";
 import {numberWithComma} from "@/utils/numberWithComma";
 import toast from "react-hot-toast";
 import {Link} from "react-router-dom";
 
-function OrderListItem({product}) {
+function OrderListItem({product, checkboxData, handleCheckBoxClick}) {
   const remove = useCartStore((state) => state.remove);
   const setCartItemCount = useCartStore((state) => state.setCartItemCount);
+
+  console.log(checkboxData);
 
   const handleDecrementItemCount = () => {
     if (product.count > 1) {
@@ -22,12 +25,15 @@ function OrderListItem({product}) {
     <li
       key={product.id}
       className="border-b border-gray-200 flex items-center py-4">
-      <CheckBox className="mr-[1.375rem] mobile:mr-1" />
+      <CheckBox
+        onClick={handleCheckBoxClick}
+        className="mr-[1.375rem] mobile:mr-1"
+      />
       <Link
         to="/menu/drink"
         className="flex basis-2/3 mobile:basis-[55%] items-center shrink-0">
         <figure className="shrink-0">
-          <img src={getPbImageURL(product, "image")} className="h-24" />
+          <LazyImage src={getPbImageURL(product, "image")} className="h-24" />
         </figure>
         <p className="productTitle basis-[32rem] mobile:basis-[50%] shrink-0 mobile:shrink font-semibold mobile:text-sm ml-6">
           {product.title}

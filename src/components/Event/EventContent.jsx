@@ -3,8 +3,15 @@ import Button from "@/components/Button";
 import LazyImage from "@/utils/LazyImage";
 import yyyymmddDate from "@/utils/yyyymmddDate";
 import {getPbImageURL} from "@/utils/getPbImageURL";
+import {useNavigate} from "react-router-dom";
 
 function EventContent({data}) {
+  const navigate = useNavigate();
+
+  const handleNavigateEventPage = () => {
+    navigate("/bbs/event");
+  };
+
   return (
     data && (
       <section className="py-20 tablet:p-16 m-auto max-w-[80rem] mobile:p-5">
@@ -41,17 +48,22 @@ function EventContent({data}) {
         <div className="pb-10 border-t">
           <div className="py-4 border-b font-light flex gap-[3.4375rem]">
             <p>다음글</p>
+            <Link to={`/bbs/event/detail/${data.nextEventId}`}>
+              <p>{data.nextEventTitle || "다음 글이 없습니다."}</p>
+            </Link>
           </div>
           <div className="mb-[1.875rem] py-4 border-b font-light flex gap-[3.4375rem]">
             <p>이전글</p>
+            <Link to={`/bbs/event/detail/${data.previousEventId}`}>
+              <p>{data.previousEventTitle || "이전 글이 없습니다."}</p>
+            </Link>
           </div>
-          <Link to="/bbs/event">
-            <Button
-              color="primary"
-              className="flex items-center p-7 text-jj_20">
-              목록으로
-            </Button>
-          </Link>
+          <Button
+            onClick={handleNavigateEventPage}
+            color="primary"
+            className="flex items-center p-7 text-jj_20">
+            목록으로
+          </Button>
         </div>
       </section>
     )

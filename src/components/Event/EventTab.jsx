@@ -10,6 +10,20 @@ function EventTab() {
   const [select, setSelect] = useState("total");
   const [contentData, setContentData] = useState([]);
 
+  /* 사용자의 입력값을 감지하고 있는 상태 */
+  const [searchText, setSearchText] = useState("");
+  const handleInputSearch = (e) => {
+    const {target} = e;
+    setSearchText(target.value);
+  };
+
+  /* 사용자의 입력값을 최종적으로 담은 상태 */
+  const [searchResult, setSearchResult] = useState("");
+  const handleSearchResult = (e) => {
+    e.preventDefault();
+    setSearchResult(searchText);
+  };
+
   const items = [
     {
       type: "total",
@@ -35,10 +49,9 @@ function EventTab() {
   };
 
   // filter 조건 처리
-  const getTabFilter = () =>
-    select === "total" || "" || undefined || null
-      ? ""
-      : `category = "${select}"`;
+  function getFilter() {
+    return select === "total" ? "" : `category = "${[select]}"`;
+  }
 
   const {data, isLoading, error, isError, ...rest} = usePaginationQuery({
     perPage: 12,
@@ -46,10 +59,11 @@ function EventTab() {
     dependency: select,
     options: {
       sort: "-created",
-      filter: getTabFilter(),
+      filter: getFilter(),
     },
   });
 
+  // console.log(data);
   useEffect(() => {
     setContentData(data);
   }, [data]);
@@ -87,8 +101,12 @@ function EventTab() {
           </li>
         ))}
       </ul>
-      <EventSearchForm />
-      <TabContents data={contentData} />
+      <EventSearchForm
+        searchText={searchText}
+        handleInputSearch={handleInputSearch}
+        handleSearchResult={handleSearchResult}
+      />
+      <TabContents data={contentData} searchResult={searchResult} />
       <EventPagination error={error} data={contentData} {...rest} />
     </>
   );

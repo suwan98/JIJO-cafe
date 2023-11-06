@@ -24,6 +24,7 @@ function SignInModal({setIsClickedSignin}) {
     email: "",
     password: "",
   });
+
   const [isEmailValid, setIsEmailValid] = useState(true);
   const [isPasswordValid, setIsPasswordValid] = useState(true);
   const handleInput = debounce((e) => {
@@ -85,22 +86,15 @@ function SignInModal({setIsClickedSignin}) {
   };
 
   /* KaKao 사용자 로그인 */
-  const isAuth = useAuthStore((state) => state.isAuth);
   const kakaoSignIn = useAuthStore((state) => state.SignWithKaKao);
   const handleSigninKakao = async () => {
     await kakaoSignIn();
-    if (isAuth) {
-      setIsClickedSignin(false);
-    }
   };
 
   /* GitHub 사용자 로그인 */
   const githubSignIn = useAuthStore((state) => state.SignWithGithub);
   const handleSignInGithub = async () => {
     await githubSignIn();
-    if (isAuth) {
-      setIsClickedSignin(false);
-    }
   };
 
   /* Eye Component 상태에 따른 비밀번호 보이기/보이지 않기 */
